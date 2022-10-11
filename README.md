@@ -1,4 +1,4 @@
-# learnwordsapp
+# LearnWordsApp
 
 Learn Flutter project.
 
