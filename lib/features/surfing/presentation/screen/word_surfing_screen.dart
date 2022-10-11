@@ -50,18 +50,14 @@ class _WordSurfingScreenState extends State<WordSurfingScreen> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
-          backgroundColor: Colors.deepOrange.shade400,
+          backgroundColor: Colors.purple,
           actions: [
-            IconButton(onPressed: () => {}, icon: const Icon(Icons.list_alt))
+            IconButton(
+                onPressed: () => {Navigator.pop(context)},
+                icon: const Icon(Icons.list_alt))
           ],
         ),
         body: const CardAndButtonWidget(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => {},
-          tooltip: 'Increment',
-          backgroundColor: Colors.deepOrange.shade400,
-          child: const Icon(Icons.add),
-        ),
       ),
     );
   }
@@ -73,7 +69,7 @@ class CardAndButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.deepOrange.shade50,
+      color: Colors.purple.shade50,
       constraints: const BoxConstraints.expand(),
       padding: const EdgeInsets.all(75),
       child: Column(
@@ -120,20 +116,20 @@ class GreetingWidget extends StatelessWidget {
       padding: const EdgeInsets.all(25),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Colors.lightBlue.shade400,
+          color: Colors.purple.shade100,
           borderRadius: const BorderRadius.vertical(
               top: Radius.circular(15), bottom: Radius.circular(15))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Greeting",
+            "Let's try to learn new words!",
             style: Theme.of(context).textTheme.headline4,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24.0),
             child: Text(
-              "Let's try to learn new words!",
+              "Press the Next button.",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),

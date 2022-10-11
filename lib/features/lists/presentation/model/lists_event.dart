@@ -8,6 +8,8 @@ part 'lists_event.freezed.dart';
 abstract class ListsEvent {
   const factory ListsEvent.newListEvent() = NewListEvent;
 
+  const factory ListsEvent.fillDB() = FillDbEvent;
+
   const factory ListsEvent.listsQueryResultEvent(
       {required List<WordsList> lists}) = ListsQueryResultEvent;
 }

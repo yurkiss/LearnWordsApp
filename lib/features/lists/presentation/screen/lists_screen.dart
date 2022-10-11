@@ -4,7 +4,9 @@ import 'package:learnwordsapp/di/setup_di.dart';
 import 'package:learnwordsapp/domain/model/words_list.dart';
 import 'package:learnwordsapp/features/list_item_details/presentation/screen/list_item_detail_screen.dart';
 import 'package:learnwordsapp/features/lists/presentation/bloc/lists_bloc.dart';
+import 'package:learnwordsapp/features/lists/presentation/model/lists_event.dart';
 import 'package:learnwordsapp/features/lists/presentation/model/lists_state.dart';
+import 'package:learnwordsapp/features/surfing/presentation/screen/word_surfing_screen.dart';
 
 class ListsScreen extends StatelessWidget {
   const ListsScreen({Key? key}) : super(key: key);
@@ -21,21 +23,25 @@ class ListsScreen extends StatelessWidget {
           // the App.build method, and use it to set our appbar title.
           title: const Text("Lists"),
           backgroundColor: Colors.purple,
+          actions: [
+            IconButton(onPressed: () {
+              var bloc = getIt.get<ListsBloc>();
+              bloc.add(const ListsEvent.fillDB());
+            }, icon: const Icon(Icons.stadium_rounded))
+          ],
         ),
         body: Column(
           children: [
             Expanded(child: BlocBuilder<ListsBloc, ListsState>(
               builder: (BuildContext context, ListsState state) {
                 return state.lists.fold(() => const Text("No records."),
-                    (List<WordsList> a) => _buildList(context, a));
+                        (List<WordsList> a) => _buildList(context, a));
               },
             ))
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => {
-            Navigator.pushNamed(context, ListsItemDetailScreen.routeKey)
-          },
+          onPressed: () => Navigator.pushNamed(context, ListsItemDetailScreen.routeKey),
           tooltip: 'Add new List',
           backgroundColor: Colors.purple,
           child: const Icon(Icons.add),
@@ -49,17 +55,22 @@ class ListsScreen extends StatelessWidget {
       key: const Key("WordsListsList"),
       itemCount: lists.length,
       itemBuilder: (context, index) {
-        return Padding(
-            key: Key("ListNameItem$index"),
-            padding: const EdgeInsets.all(2.0),
-            child: Container(
-              padding: const EdgeInsets.all(25),
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Text(lists[index].title),
-            ));
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, WordSurfingScreen.routeKey);
+          },
+          child: Padding(
+              key: Key("ListNameItem$index"),
+              padding: const EdgeInsets.all(2.0),
+              child: Container(
+                padding: const EdgeInsets.all(25),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Text(lists[index].title),
+              )),
+        );
       },
     );
   }

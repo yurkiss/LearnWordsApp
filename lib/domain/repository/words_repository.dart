@@ -8,4 +8,6 @@ abstract class WordsRepository {
 
   Future<List<WordsList>> getLists();
 
+  Future<void> fillDB();
+
 }

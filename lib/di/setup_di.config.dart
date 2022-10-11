@@ -41,7 +41,10 @@ _i1.GetIt $initGetIt(
       _i8.WordsRepositoryImpl(database: get<_i3.AppDatabase>()));
   gh.factory<_i9.ListItemBloc>(
       () => _i9.ListItemBloc(get<_i5.ListsRepository>()));
-  gh.factory<_i10.ListsBloc>(() => _i10.ListsBloc(get<_i5.ListsRepository>()));
+  gh.factory<_i10.ListsBloc>(() => _i10.ListsBloc(
+        get<_i5.ListsRepository>(),
+        get<_i7.WordsRepository>(),
+      ));
   gh.factory<_i11.WordCardBloc>(
       () => _i11.WordCardBloc(get<_i7.WordsRepository>()));
   return get;

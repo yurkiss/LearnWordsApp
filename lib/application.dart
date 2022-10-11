@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learnwordsapp/features/home/presentation/screen/home_screen.dart';
 import 'package:learnwordsapp/features/list_item_details/presentation/screen/list_item_detail_screen.dart';
 import 'package:learnwordsapp/features/lists/presentation/screen/lists_screen.dart';
-import 'package:learnwordsapp/features/surfing/presentation/screen/my_home_page.dart';
+import 'package:learnwordsapp/features/surfing/presentation/screen/word_surfing_screen.dart';
 
 class DebugApplication extends StatelessWidget {
   const DebugApplication({Key? key}) : super(key: key);

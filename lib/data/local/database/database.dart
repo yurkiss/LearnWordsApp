@@ -6,9 +6,9 @@ import 'package:drift/drift.dart';
 // These imports are only needed to open the database
 import 'package:drift/native.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learnwordsapp/data/local/api/app_database.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:learnwordsapp/data/local/api/app_database.dart';
 
 part 'database.g.dart';
 
@@ -34,8 +34,16 @@ class AppDb extends _$AppDb implements AppDatabase {
     return into(dbWordLists).insert(entry);
   }
 
+  @override
   Future<int> addWord(DbTranslatedWordsCompanion entry) {
     return into(dbTranslatedWords).insert(entry);
+  }
+
+  @override
+  Future<void> addWords(List<DbTranslatedWordsCompanion> entries) async {
+    await batch((Batch batch) {
+      batch.insertAll(dbTranslatedWords, entries);
+    });
   }
 
   @override

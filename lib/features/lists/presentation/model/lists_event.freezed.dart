@@ -19,18 +19,21 @@ mixin _$ListsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
+    required TResult Function() fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
+    TResult Function()? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
+    TResult Function()? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) =>
@@ -38,6 +41,7 @@ mixin _$ListsEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(NewListEvent value) newListEvent,
+    required TResult Function(FillDbEvent value) fillDB,
     required TResult Function(ListsQueryResultEvent value)
         listsQueryResultEvent,
   }) =>
@@ -45,12 +49,14 @@ mixin _$ListsEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
     TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
     TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
     required TResult orElse(),
   }) =>
@@ -120,6 +126,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
+    required TResult Function() fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) {
     return newListEvent();
@@ -129,6 +136,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
+    TResult Function()? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) {
     return newListEvent?.call();
@@ -138,6 +146,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
+    TResult Function()? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) {
@@ -151,6 +160,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(NewListEvent value) newListEvent,
+    required TResult Function(FillDbEvent value) fillDB,
     required TResult Function(ListsQueryResultEvent value)
         listsQueryResultEvent,
   }) {
@@ -161,6 +171,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
     TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
   }) {
     return newListEvent?.call(this);
@@ -170,6 +181,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
     TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
     required TResult orElse(),
   }) {
@@ -182,6 +194,123 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
 
 abstract class NewListEvent implements ListsEvent {
   const factory NewListEvent() = _$NewListEvent;
+}
+
+/// @nodoc
+abstract class _$$FillDbEventCopyWith<$Res> {
+  factory _$$FillDbEventCopyWith(
+          _$FillDbEvent value, $Res Function(_$FillDbEvent) then) =
+      __$$FillDbEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$FillDbEventCopyWithImpl<$Res> extends _$ListsEventCopyWithImpl<$Res>
+    implements _$$FillDbEventCopyWith<$Res> {
+  __$$FillDbEventCopyWithImpl(
+      _$FillDbEvent _value, $Res Function(_$FillDbEvent) _then)
+      : super(_value, (v) => _then(v as _$FillDbEvent));
+
+  @override
+  _$FillDbEvent get _value => super._value as _$FillDbEvent;
+}
+
+/// @nodoc
+
+class _$FillDbEvent with DiagnosticableTreeMixin implements FillDbEvent {
+  const _$FillDbEvent();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ListsEvent.fillDB()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'ListsEvent.fillDB'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$FillDbEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() newListEvent,
+    required TResult Function() fillDB,
+    required TResult Function(List<WordsList> lists) listsQueryResultEvent,
+  }) {
+    return fillDB();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? newListEvent,
+    TResult Function()? fillDB,
+    TResult Function(List<WordsList> lists)? listsQueryResultEvent,
+  }) {
+    return fillDB?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? newListEvent,
+    TResult Function()? fillDB,
+    TResult Function(List<WordsList> lists)? listsQueryResultEvent,
+    required TResult orElse(),
+  }) {
+    if (fillDB != null) {
+      return fillDB();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NewListEvent value) newListEvent,
+    required TResult Function(FillDbEvent value) fillDB,
+    required TResult Function(ListsQueryResultEvent value)
+        listsQueryResultEvent,
+  }) {
+    return fillDB(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
+    TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
+  }) {
+    return fillDB?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
+    TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
+    required TResult orElse(),
+  }) {
+    if (fillDB != null) {
+      return fillDB(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FillDbEvent implements ListsEvent {
+  const factory FillDbEvent() = _$FillDbEvent;
 }
 
 /// @nodoc
@@ -266,6 +395,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
+    required TResult Function() fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) {
     return listsQueryResultEvent(lists);
@@ -275,6 +405,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
+    TResult Function()? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) {
     return listsQueryResultEvent?.call(lists);
@@ -284,6 +415,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
+    TResult Function()? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) {
@@ -297,6 +429,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(NewListEvent value) newListEvent,
+    required TResult Function(FillDbEvent value) fillDB,
     required TResult Function(ListsQueryResultEvent value)
         listsQueryResultEvent,
   }) {
@@ -307,6 +440,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
     TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
   }) {
     return listsQueryResultEvent?.call(this);
@@ -316,6 +450,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(NewListEvent value)? newListEvent,
+    TResult Function(FillDbEvent value)? fillDB,
     TResult Function(ListsQueryResultEvent value)? listsQueryResultEvent,
     required TResult orElse(),
   }) {

@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learnwordsapp/data/local/api/app_database.dart';
 import 'package:learnwordsapp/data/local/api/exported_models.dart';
@@ -30,5 +31,24 @@ class WordsRepositoryImpl implements WordsRepository {
         .map(
             (DbWordList e) => WordsList(id: e.id, title: e.title ?? "Untitled"))
         .toList(growable: false);
+  }
+
+  @override
+  Future<void> fillDB() async {
+    return database.addWords(const [
+      DbTranslatedWordsCompanion(
+          wordTitle: Value('Hallo'),
+          wordTranslation: Value('Hello'),
+          wordList: Value(1)),
+      DbTranslatedWordsCompanion(
+          wordTitle: Value('Tschüs'),
+          wordTranslation: Value('Bye'),
+          wordList: Value(1)),
+      DbTranslatedWordsCompanion(
+          wordTitle: Value('Entschuldigung'),
+          wordTranslation: Value('Excuse me'),
+          wordList: Value(1)),
+
+    ]);
   }
 }

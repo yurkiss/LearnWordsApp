@@ -12,7 +12,7 @@ class WordCardWidget extends StatelessWidget {
       padding: const EdgeInsets.all(25),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Colors.deepOrange[200],
+          color: Colors.purple.shade100,
           borderRadius: const BorderRadius.vertical(
               top: Radius.circular(15), bottom: Radius.circular(15))),
       child: Column(
