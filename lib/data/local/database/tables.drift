@@ -1,0 +1,15 @@
+CREATE TABLE db_translated_words (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    word_title TEXT,
+    word_translation TEXT,
+    word_list INT REFERENCES db_word_lists (id)
+);
+
+
+CREATE TABLE db_word_lists (
+    id INT NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT
+);
+
+
+wordsFromList: SELECT * FROM db_translated_words WHERE word_list = ?;
