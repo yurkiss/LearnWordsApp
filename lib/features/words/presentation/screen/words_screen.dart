@@ -20,41 +20,27 @@ class WordsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => getIt.get<WordsBloc>(param1: wordsList),
-      child: Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(wordsList.title),
-          backgroundColor: Colors.purple,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  var bloc = getIt.get<ListsBloc>();
-                  bloc.add(ListsEvent.fillDB(wordsList: wordsList));
-                },
-                icon: const Icon(Icons.stadium_rounded))
-          ],
-        ),
-        body: Column(
-          children: [
-            Expanded(child: BlocBuilder<WordsBloc, WordsListState>(
-              builder: (BuildContext context, WordsListState state) {
-                return state.lists.fold(() => const Text("No records."),
-                    (List<Word> a) => _buildList(context, a));
-              },
-            ))
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => WordDetailScreen(
-                        wordsList: wordsList,
-                      ))),
-          tooltip: 'Add new Word',
-          backgroundColor: Colors.purple,
-          child: const Icon(Icons.add),
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            color: AppColors.backgroundColor,
+            child: Column(
+              children: [
+                _buildTopNav(context),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Expanded(child: BlocBuilder<WordsBloc, WordsListState>(
+                  builder: (BuildContext context, WordsListState state) {
+                    return state.lists.fold(() => const Text("No records."),
+                        (List<Word> a) {
+                          return a.isEmpty ? const Text("No records.") : _buildList(context, a);
+                        });
+                  },
+                ))
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -91,5 +77,60 @@ class WordsScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _buildTopNav(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.keyboard_backspace,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24,
+              onPressed: () => Navigator.pop(context)),
+          Expanded(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    wordsList.title,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          IconButton(
+              icon: const Icon(
+                Icons.add_sharp,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24,
+              tooltip: 'Add new Word',
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => WordDetailScreen(
+                            wordsList: wordsList,
+                          )))),
+        ],
+      ),
+    );
+
+  }
+
+  Widget _stubDataButton(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          var bloc = getIt.get<ListsBloc>();
+          bloc.add(ListsEvent.fillDB(wordsList: wordsList));
+        },
+        icon: const Icon(Icons.stadium_rounded));
   }
 }

@@ -18,29 +18,29 @@ class ListsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => getIt.get<ListsBloc>(),
-      child: Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: const Text("Lists"),
-          backgroundColor: Colors.purple,
-        ),
-        body: Column(
-          children: [
-            Expanded(child: BlocBuilder<ListsBloc, ListsState>(
-              builder: (BuildContext context, ListsState state) {
-                return state.lists.fold(() => const Text("No records."),
-                    (List<WordsList> a) => _buildList(context, a));
-              },
-            ))
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, ListsItemDetailScreen.routeKey),
-          tooltip: 'Add new List',
-          backgroundColor: Colors.purple,
-          child: const Icon(Icons.add),
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            color: AppColors.backgroundColor,
+            child: Column(
+              children: [
+                _buildTopNav(context),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Expanded(child: BlocBuilder<ListsBloc, ListsState>(
+                  builder: (BuildContext context, ListsState state) {
+                    return state.lists.fold(() => const Text("No records."),
+                        (List<WordsList> a) {
+                      return a.isEmpty
+                          ? const Text("No records.")
+                          : _buildList(context, a);
+                    });
+                  },
+                ))
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -53,7 +53,12 @@ class ListsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Navigator.pushNamed(context, WordSurfingScreen.routeKey);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => WordSurfingScreen(
+                          title: lists[index].title,
+                        )));
           },
           child: Padding(
               key: Key("ListNameItem$index"),
@@ -68,6 +73,12 @@ class ListsScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
+                    Icon(
+                      Icons.menu_book,
+                      color: AppColors.primaryColor.shade900,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
                     Expanded(child: Text(lists[index].title)),
                     IconButton(
                       onPressed: () => {
@@ -85,6 +96,47 @@ class ListsScreen extends StatelessWidget {
               )),
         );
       },
+    );
+  }
+
+  Widget _buildTopNav(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.keyboard_backspace,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24,
+              onPressed: () => Navigator.pop(context)),
+          Expanded(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Lists',
+                    style: Theme.of(context).textTheme.headline5?.copyWith(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          IconButton(
+              icon: const Icon(
+                Icons.add_sharp,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24,
+              tooltip: 'Add new list',
+              onPressed: () =>
+                  Navigator.pushNamed(context, ListsItemDetailScreen.routeKey)),
+        ],
+      ),
     );
   }
 }

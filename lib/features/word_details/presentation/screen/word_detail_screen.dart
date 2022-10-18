@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
 import 'package:learnwordsapp/domain/model/words_list.dart';
+import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/features/common/widget/general_edit_field.dart';
 import 'package:learnwordsapp/features/word_details/presentation/bloc/word_detail_bloc.dart';
 import 'package:learnwordsapp/features/word_details/presentation/model/word_detail_event.dart';
@@ -12,23 +13,24 @@ class WordDetailScreen extends StatefulWidget {
   final int wordId;
   final DisplayMode displayMode;
 
-  const WordDetailScreen._({
-    Key? key,
-    required this.wordsList,
-    required this.wordId,
-    required this.displayMode
-  }) : super(key: key);
+  const WordDetailScreen._(
+      {Key? key,
+      required this.wordsList,
+      required this.wordId,
+      required this.displayMode})
+      : super(key: key);
 
   factory WordDetailScreen({
     Key? key,
     required WordsList wordsList,
     int wordId = -1,
-  }) => WordDetailScreen._(
-      key: key,
-      wordsList: wordsList,
-      wordId: wordId,
-      displayMode: wordId > 0 ? DisplayMode.edit : DisplayMode.create,
-    );
+  }) =>
+      WordDetailScreen._(
+        key: key,
+        wordsList: wordsList,
+        wordId: wordId,
+        displayMode: wordId > 0 ? DisplayMode.edit : DisplayMode.create,
+      );
 
   @override
   State<StatefulWidget> createState() => WordDetailScreenState();
@@ -59,40 +61,74 @@ class WordDetailScreenState extends State<WordDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: const Text("Add new Word"),
-        backgroundColor: Colors.purple,
-      ),
-      body: Column(
-        children: <Widget>[
-          GeneralEditField(
-            controller: wordTitleController,
-            hintText: 'Enter a new word title',
-            labelText: 'Word',
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          color: AppColors.backgroundColor,
+          child: Column(
+            children: <Widget>[
+              _buildTopNav(context),
+              GeneralEditField(
+                controller: wordTitleController,
+                hintText: 'Enter a new word title',
+                labelText: 'Word',
+              ),
+              GeneralEditField(
+                controller: wordTranslationController,
+                hintText: 'Enter the translation',
+                labelText: 'Translation',
+              ),
+            ],
           ),
-          GeneralEditField(
-            controller: wordTranslationController,
-            hintText: 'Enter the translation',
-            labelText: 'Translation',
-          ),
-        ],
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          bloc.add(WordEvent.saveWordEvent(
-            title: wordTitleController.text,
-            translation: wordTranslationController.text,
-            list: widget.wordsList,
-          ));
+    );
+  }
 
-          Navigator.pop(context);
-        },
-        tooltip: 'Save',
-        backgroundColor: Colors.purple,
-        child: const Icon(Icons.check),
+  Widget _buildTopNav(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.keyboard_backspace,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24,
+              onPressed: () => Navigator.pop(context)),
+          Expanded(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Add new word',
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          IconButton(
+              icon: const Icon(
+                Icons.check,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24,
+              tooltip: 'Save',
+              onPressed: () {
+                bloc.add(WordEvent.saveWordEvent(
+                  title: wordTitleController.text,
+                  translation: wordTranslationController.text,
+                  list: widget.wordsList,
+                ));
+
+                Navigator.pop(context);
+              }),
+        ],
       ),
     );
   }

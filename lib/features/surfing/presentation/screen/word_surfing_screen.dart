@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
+import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/features/surfing/presentation/bloc/word_card_block.dart';
 import 'package:learnwordsapp/features/surfing/presentation/model/next_word_event.dart';
 import 'package:learnwordsapp/features/surfing/presentation/model/word_card_state.dart';
 import 'package:learnwordsapp/features/surfing/presentation/widget/word_card.dart';
 
 class WordSurfingScreen extends StatefulWidget {
-  const WordSurfingScreen({Key? key, required this.title}) : super(key: key);
-
   static const String routeKey = '/surfing';
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
+
+  const WordSurfingScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   State<WordSurfingScreen> createState() => _WordSurfingScreenState();
@@ -45,65 +36,103 @@ class _WordSurfingScreenState extends State<WordSurfingScreen> {
     // than having to individually change instances of widgets.
     return BlocProvider(
       create: (BuildContext context) => _wordCardBloc,
-      child: Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-          backgroundColor: Colors.purple,
-          actions: [
-            IconButton(
-                onPressed: () => {Navigator.pop(context)},
-                icon: const Icon(Icons.list_alt))
-          ],
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+              color: AppColors.backgroundColor,
+              child: Column(
+                children: [
+                  _buildTopNav(context),
+                  Expanded(child: _getWordCardWidget()),
+                  const SizedBox(height: 8.0),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _actionButtonText(
+                          label: 'Back',
+                          color: AppColors.primaryColor,
+                          onPressed: () {},
+                        ),
+                        const Expanded(child: SizedBox()),
+                        _actionButtonText(
+                            label: 'Next',
+                            color: AppColors.primaryColor,
+                            onPressed: () =>
+                                _wordCardBloc.add(const NextWordEvent())),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4.0)
+                ],
+              )),
         ),
-        body: const CardAndButtonWidget(),
-      ),
-    );
-  }
-}
-
-class CardAndButtonWidget extends StatelessWidget {
-  const CardAndButtonWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.purple.shade50,
-      constraints: const BoxConstraints.expand(),
-      padding: const EdgeInsets.all(75),
-      child: Column(
-        children: [
-          getWordCardWidget(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(25),
-                    textStyle: const TextStyle(fontSize: 20)),
-                onPressed: () {
-                  BlocProvider.of<WordCardBloc>(context)
-                      .add(const NextWordEvent());
-                  // context.read<WordCardBloc>().add(const NextWordEvent());
-                  // _wordCardBloc.add(const NextWordEvent());
-                },
-                child: const Text('Next')),
-          )
-        ],
       ),
     );
   }
 
-  Widget getWordCardWidget() {
+  Widget _actionButtonText({
+    required String label,
+    Color? color,
+    VoidCallback? onPressed,
+  }) {
+    var buttonStyle = TextButton.styleFrom(
+        primary: color,
+        padding: const EdgeInsets.all(24),
+        textStyle: const TextStyle(fontSize: 16));
+
+    return TextButton(
+      style: buttonStyle,
+      onPressed: onPressed,
+      child: Text(label),
+    );
+  }
+
+  Widget _getWordCardWidget() {
     return BlocBuilder<WordCardBloc, WordCardState>(builder: (context, state) {
       return state.word.fold(
           () => const Expanded(child: GreetingWidget()),
           (word) => Expanded(
                   child: WordCardWidget(
+                    key: UniqueKey(),
                 word: word.title,
                 translation: word.translation,
               )));
     });
+  }
+
+  Widget _buildTopNav(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: <Widget>[
+          IconButton(
+              icon: const Icon(
+                Icons.keyboard_backspace,
+                color: AppColors.primaryColor,
+              ),
+              iconSize: 24.0,
+              onPressed: () => Navigator.pop(context)),
+          Expanded(
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.title,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 24.0,),
+        ],
+      ),
+    );
   }
 }
 
@@ -114,10 +143,10 @@ class GreetingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(25),
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Colors.purple.shade100,
-          borderRadius: const BorderRadius.vertical(
+      width: MediaQuery.of(context).size.width * 0.9,
+      decoration: const BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.vertical(
               top: Radius.circular(15), bottom: Radius.circular(15))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -125,14 +154,18 @@ class GreetingWidget extends StatelessWidget {
           Text(
             "Let's try to learn new words!",
             maxLines: 5,
-            style: Theme.of(context).textTheme.headline4,
+            style: Theme.of(context).textTheme.headline4?.copyWith(
+              color: AppColors.cardTextColor,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24.0),
             child: Text(
               "Press the Next button.",
               maxLines: 5,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                color: AppColors.cardTextColor,
+              ),
             ),
           ),
         ],
