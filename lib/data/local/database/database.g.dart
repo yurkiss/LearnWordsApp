@@ -183,9 +183,12 @@ class DbTranslatedWord extends DataClass
   final int id;
   final String? wordTitle;
   final String? wordTranslation;
-  final int? wordList;
+  final int wordList;
   const DbTranslatedWord(
-      {required this.id, this.wordTitle, this.wordTranslation, this.wordList});
+      {required this.id,
+      this.wordTitle,
+      this.wordTranslation,
+      required this.wordList});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -196,9 +199,7 @@ class DbTranslatedWord extends DataClass
     if (!nullToAbsent || wordTranslation != null) {
       map['word_translation'] = Variable<String>(wordTranslation);
     }
-    if (!nullToAbsent || wordList != null) {
-      map['word_list'] = Variable<int>(wordList);
-    }
+    map['word_list'] = Variable<int>(wordList);
     return map;
   }
 
@@ -211,9 +212,7 @@ class DbTranslatedWord extends DataClass
       wordTranslation: wordTranslation == null && nullToAbsent
           ? const Value.absent()
           : Value(wordTranslation),
-      wordList: wordList == null && nullToAbsent
-          ? const Value.absent()
-          : Value(wordList),
+      wordList: Value(wordList),
     );
   }
 
@@ -224,7 +223,7 @@ class DbTranslatedWord extends DataClass
       id: serializer.fromJson<int>(json['id']),
       wordTitle: serializer.fromJson<String?>(json['word_title']),
       wordTranslation: serializer.fromJson<String?>(json['word_translation']),
-      wordList: serializer.fromJson<int?>(json['word_list']),
+      wordList: serializer.fromJson<int>(json['word_list']),
     );
   }
   @override
@@ -234,7 +233,7 @@ class DbTranslatedWord extends DataClass
       'id': serializer.toJson<int>(id),
       'word_title': serializer.toJson<String?>(wordTitle),
       'word_translation': serializer.toJson<String?>(wordTranslation),
-      'word_list': serializer.toJson<int?>(wordList),
+      'word_list': serializer.toJson<int>(wordList),
     };
   }
 
@@ -242,14 +241,14 @@ class DbTranslatedWord extends DataClass
           {int? id,
           Value<String?> wordTitle = const Value.absent(),
           Value<String?> wordTranslation = const Value.absent(),
-          Value<int?> wordList = const Value.absent()}) =>
+          int? wordList}) =>
       DbTranslatedWord(
         id: id ?? this.id,
         wordTitle: wordTitle.present ? wordTitle.value : this.wordTitle,
         wordTranslation: wordTranslation.present
             ? wordTranslation.value
             : this.wordTranslation,
-        wordList: wordList.present ? wordList.value : this.wordList,
+        wordList: wordList ?? this.wordList,
       );
   @override
   String toString() {
@@ -278,7 +277,7 @@ class DbTranslatedWordsCompanion extends UpdateCompanion<DbTranslatedWord> {
   final Value<int> id;
   final Value<String?> wordTitle;
   final Value<String?> wordTranslation;
-  final Value<int?> wordList;
+  final Value<int> wordList;
   const DbTranslatedWordsCompanion({
     this.id = const Value.absent(),
     this.wordTitle = const Value.absent(),
@@ -289,8 +288,8 @@ class DbTranslatedWordsCompanion extends UpdateCompanion<DbTranslatedWord> {
     this.id = const Value.absent(),
     this.wordTitle = const Value.absent(),
     this.wordTranslation = const Value.absent(),
-    this.wordList = const Value.absent(),
-  });
+    required int wordList,
+  }) : wordList = Value(wordList);
   static Insertable<DbTranslatedWord> custom({
     Expression<int>? id,
     Expression<String>? wordTitle,
@@ -309,7 +308,7 @@ class DbTranslatedWordsCompanion extends UpdateCompanion<DbTranslatedWord> {
       {Value<int>? id,
       Value<String?>? wordTitle,
       Value<String?>? wordTranslation,
-      Value<int?>? wordList}) {
+      Value<int>? wordList}) {
     return DbTranslatedWordsCompanion(
       id: id ?? this.id,
       wordTitle: wordTitle ?? this.wordTitle,
@@ -375,10 +374,10 @@ class DbTranslatedWords extends Table
       $customConstraints: '');
   final VerificationMeta _wordListMeta = const VerificationMeta('wordList');
   late final GeneratedColumn<int> wordList = GeneratedColumn<int>(
-      'word_list', aliasedName, true,
+      'word_list', aliasedName, false,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      $customConstraints: 'REFERENCES db_word_lists (id)');
+      requiredDuringInsert: true,
+      $customConstraints: 'NOT NULL REFERENCES db_word_lists (id)');
   @override
   List<GeneratedColumn> get $columns =>
       [id, wordTitle, wordTranslation, wordList];
@@ -407,6 +406,8 @@ class DbTranslatedWords extends Table
     if (data.containsKey('word_list')) {
       context.handle(_wordListMeta,
           wordList.isAcceptableOrUnknown(data['word_list']!, _wordListMeta));
+    } else if (isInserting) {
+      context.missing(_wordListMeta);
     }
     return context;
   }
@@ -424,7 +425,7 @@ class DbTranslatedWords extends Table
       wordTranslation: attachedDatabase.options.types.read(
           DriftSqlType.string, data['${effectivePrefix}word_translation']),
       wordList: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}word_list']),
+          .read(DriftSqlType.int, data['${effectivePrefix}word_list'])!,
     );
   }
 
@@ -441,7 +442,7 @@ abstract class _$AppDb extends GeneratedDatabase {
   _$AppDb(QueryExecutor e) : super(e);
   late final DbWordLists dbWordLists = DbWordLists(this);
   late final DbTranslatedWords dbTranslatedWords = DbTranslatedWords(this);
-  Selectable<DbTranslatedWord> wordsFromList(int? var1) {
+  Selectable<DbTranslatedWord> wordsFromList(int var1) {
     return customSelect(
         'SELECT * FROM db_translated_words WHERE word_list = ?1',
         variables: [

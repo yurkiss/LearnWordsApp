@@ -10,7 +10,7 @@ class WordCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(25),
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           color: Colors.purple.shade100,
           borderRadius: const BorderRadius.vertical(
@@ -18,13 +18,17 @@ class WordCardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            word,
-            style: Theme.of(context).textTheme.headline3,
+          FittedBox(
+            child: Text(
+              word,
+              style: Theme.of(context).textTheme.headline3,
+            ),
           ),
-          Text(
-            translation,
-            style: Theme.of(context).textTheme.headline5,
+          FittedBox(
+            child: Text(
+              translation,
+              style: Theme.of(context).textTheme.headline5,
+            ),
           ),
 
         ],

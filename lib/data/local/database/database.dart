@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 
 // These imports are only needed to open the database
@@ -56,17 +57,27 @@ class AppDb extends _$AppDb implements AppDatabase {
     return select(dbWordLists).get();
   }
 
-  Stream<List<DbTranslatedWord>> watchWordsInList(DbWordList c) {
+  @override
+  Stream<List<DbTranslatedWord>> watchWordsInList(DbWordList list) {
     return (select(dbTranslatedWords)
-          ..where((DbTranslatedWords t) => t.wordList.equals(c.id)))
+          ..where((DbTranslatedWords t) => t.wordList.equals(list.id)))
         .watch();
   }
 
   @override
-  Future<List<DbTranslatedWord>> getWordsInList(int listId) {
+  Future<List<DbTranslatedWord>> getWordsInList(DbWordList list) {
     return (select(dbTranslatedWords)
-          ..where((DbTranslatedWords t) => t.wordList.equals(listId)))
+          ..where((DbTranslatedWords t) => t.wordList.equals(list.id)))
         .get();
+  }
+
+  @override
+  Future<Option<DbTranslatedWord>> getWordById(int wordId) async {
+    final r = await (select(dbTranslatedWords)
+          ..where((DbTranslatedWords t) => t.id.equals(wordId)))
+        .get();
+
+    return option(r.isNotEmpty, r.first);
   }
 }
 

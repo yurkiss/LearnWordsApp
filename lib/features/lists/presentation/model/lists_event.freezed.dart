@@ -19,21 +19,21 @@ mixin _$ListsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
-    required TResult Function() fillDB,
+    required TResult Function(WordsList wordsList) fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) =>
@@ -126,7 +126,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
-    required TResult Function() fillDB,
+    required TResult Function(WordsList wordsList) fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) {
     return newListEvent();
@@ -136,7 +136,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) {
     return newListEvent?.call();
@@ -146,7 +146,7 @@ class _$NewListEvent with DiagnosticableTreeMixin implements NewListEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) {
@@ -201,6 +201,9 @@ abstract class _$$FillDbEventCopyWith<$Res> {
   factory _$$FillDbEventCopyWith(
           _$FillDbEvent value, $Res Function(_$FillDbEvent) then) =
       __$$FillDbEventCopyWithImpl<$Res>;
+  $Res call({WordsList wordsList});
+
+  $WordsListCopyWith<$Res> get wordsList;
 }
 
 /// @nodoc
@@ -212,63 +215,95 @@ class __$$FillDbEventCopyWithImpl<$Res> extends _$ListsEventCopyWithImpl<$Res>
 
   @override
   _$FillDbEvent get _value => super._value as _$FillDbEvent;
+
+  @override
+  $Res call({
+    Object? wordsList = freezed,
+  }) {
+    return _then(_$FillDbEvent(
+      wordsList: wordsList == freezed
+          ? _value.wordsList
+          : wordsList // ignore: cast_nullable_to_non_nullable
+              as WordsList,
+    ));
+  }
+
+  @override
+  $WordsListCopyWith<$Res> get wordsList {
+    return $WordsListCopyWith<$Res>(_value.wordsList, (value) {
+      return _then(_value.copyWith(wordsList: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$FillDbEvent with DiagnosticableTreeMixin implements FillDbEvent {
-  const _$FillDbEvent();
+  const _$FillDbEvent({required this.wordsList});
+
+  @override
+  final WordsList wordsList;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ListsEvent.fillDB()';
+    return 'ListsEvent.fillDB(wordsList: $wordsList)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'ListsEvent.fillDB'));
+    properties
+      ..add(DiagnosticsProperty('type', 'ListsEvent.fillDB'))
+      ..add(DiagnosticsProperty('wordsList', wordsList));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$FillDbEvent);
+        (other.runtimeType == runtimeType &&
+            other is _$FillDbEvent &&
+            const DeepCollectionEquality().equals(other.wordsList, wordsList));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(wordsList));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$FillDbEventCopyWith<_$FillDbEvent> get copyWith =>
+      __$$FillDbEventCopyWithImpl<_$FillDbEvent>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
-    required TResult Function() fillDB,
+    required TResult Function(WordsList wordsList) fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) {
-    return fillDB();
+    return fillDB(wordsList);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) {
-    return fillDB?.call();
+    return fillDB?.call(wordsList);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) {
     if (fillDB != null) {
-      return fillDB();
+      return fillDB(wordsList);
     }
     return orElse();
   }
@@ -310,7 +345,13 @@ class _$FillDbEvent with DiagnosticableTreeMixin implements FillDbEvent {
 }
 
 abstract class FillDbEvent implements ListsEvent {
-  const factory FillDbEvent() = _$FillDbEvent;
+  const factory FillDbEvent({required final WordsList wordsList}) =
+      _$FillDbEvent;
+
+  WordsList get wordsList;
+  @JsonKey(ignore: true)
+  _$$FillDbEventCopyWith<_$FillDbEvent> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -395,7 +436,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() newListEvent,
-    required TResult Function() fillDB,
+    required TResult Function(WordsList wordsList) fillDB,
     required TResult Function(List<WordsList> lists) listsQueryResultEvent,
   }) {
     return listsQueryResultEvent(lists);
@@ -405,7 +446,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
   }) {
     return listsQueryResultEvent?.call(lists);
@@ -415,7 +456,7 @@ class _$ListsQueryResultEvent
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? newListEvent,
-    TResult Function()? fillDB,
+    TResult Function(WordsList wordsList)? fillDB,
     TResult Function(List<WordsList> lists)? listsQueryResultEvent,
     required TResult orElse(),
   }) {

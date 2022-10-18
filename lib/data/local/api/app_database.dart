@@ -1,14 +1,20 @@
+import 'package:dartz/dartz.dart';
 import 'package:learnwordsapp/data/local/database/database.dart';
 
 abstract class AppDatabase {
 
+  // Lists
   Future<List<DbWordList>> getLists();
   Future<int> addList(DbWordListsCompanion list);
-  Future<int> addWord(DbTranslatedWordsCompanion words);
-  Future<void> addWords(List<DbTranslatedWordsCompanion> words);
   Stream<List<DbWordList>> watchLists();
 
-  Future<List<DbTranslatedWord>> getWordsInList(int listId);
+  // Words
+  Future<int> addWord(DbTranslatedWordsCompanion words);
+  Future<void> addWords(List<DbTranslatedWordsCompanion> words);
+  Future<List<DbTranslatedWord>> getWordsInList(DbWordList list);
+  Future<Option<DbTranslatedWord>> getWordById(int wordId);
+  Stream<List<DbTranslatedWord>> watchWordsInList(DbWordList list);
+
 
   Future<void> dispose();
 }

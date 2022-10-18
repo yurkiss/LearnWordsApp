@@ -124,12 +124,14 @@ class GreetingWidget extends StatelessWidget {
         children: [
           Text(
             "Let's try to learn new words!",
+            maxLines: 5,
             style: Theme.of(context).textTheme.headline4,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24.0),
             child: Text(
               "Press the Next button.",
+              maxLines: 5,
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),

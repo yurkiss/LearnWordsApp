@@ -16,6 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Word {
+  int get id => throw _privateConstructorUsedError;
+  int get listId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get translation => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
@@ -28,7 +30,8 @@ mixin _$Word {
 abstract class $WordCopyWith<$Res> {
   factory $WordCopyWith(Word value, $Res Function(Word) then) =
       _$WordCopyWithImpl<$Res>;
-  $Res call({String title, String translation, String? image});
+  $Res call(
+      {int id, int listId, String title, String translation, String? image});
 }
 
 /// @nodoc
@@ -41,11 +44,21 @@ class _$WordCopyWithImpl<$Res> implements $WordCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? listId = freezed,
     Object? title = freezed,
     Object? translation = freezed,
     Object? image = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      listId: listId == freezed
+          ? _value.listId
+          : listId // ignore: cast_nullable_to_non_nullable
+              as int,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -67,7 +80,8 @@ abstract class _$$_WordCopyWith<$Res> implements $WordCopyWith<$Res> {
   factory _$$_WordCopyWith(_$_Word value, $Res Function(_$_Word) then) =
       __$$_WordCopyWithImpl<$Res>;
   @override
-  $Res call({String title, String translation, String? image});
+  $Res call(
+      {int id, int listId, String title, String translation, String? image});
 }
 
 /// @nodoc
@@ -81,11 +95,21 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? listId = freezed,
     Object? title = freezed,
     Object? translation = freezed,
     Object? image = freezed,
   }) {
     return _then(_$_Word(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      listId: listId == freezed
+          ? _value.listId
+          : listId // ignore: cast_nullable_to_non_nullable
+              as int,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -105,8 +129,18 @@ class __$$_WordCopyWithImpl<$Res> extends _$WordCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Word with DiagnosticableTreeMixin implements _Word {
-  const _$_Word({required this.title, required this.translation, this.image});
+  _$_Word(
+      {this.id = 0,
+      required this.listId,
+      required this.title,
+      required this.translation,
+      this.image});
 
+  @override
+  @JsonKey()
+  final int id;
+  @override
+  final int listId;
   @override
   final String title;
   @override
@@ -116,7 +150,7 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Word(title: $title, translation: $translation, image: $image)';
+    return 'Word(id: $id, listId: $listId, title: $title, translation: $translation, image: $image)';
   }
 
   @override
@@ -124,6 +158,8 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Word'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('listId', listId))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('translation', translation))
       ..add(DiagnosticsProperty('image', image));
@@ -134,6 +170,8 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Word &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.listId, listId) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.translation, translation) &&
@@ -143,6 +181,8 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(listId),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(translation),
       const DeepCollectionEquality().hash(image));
@@ -154,11 +194,17 @@ class _$_Word with DiagnosticableTreeMixin implements _Word {
 }
 
 abstract class _Word implements Word {
-  const factory _Word(
-      {required final String title,
+  factory _Word(
+      {final int id,
+      required final int listId,
+      required final String title,
       required final String translation,
       final String? image}) = _$_Word;
 
+  @override
+  int get id;
+  @override
+  int get listId;
   @override
   String get title;
   @override

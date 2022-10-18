@@ -1,7 +1,10 @@
+import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learnwordsapp/data/local/api/app_database.dart';
 import 'package:learnwordsapp/data/local/api/exported_models.dart';
+import 'package:learnwordsapp/data/local/mapper/word_mapper.dart';
+import 'package:learnwordsapp/data/local/mapper/words_list_mapper.dart';
 import 'package:learnwordsapp/domain/model/word.dart';
 import 'package:learnwordsapp/domain/model/words_list.dart';
 import 'package:learnwordsapp/domain/repository/words_repository.dart';
@@ -9,46 +12,66 @@ import 'package:learnwordsapp/domain/repository/words_repository.dart';
 @Singleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
   final AppDatabase database;
+  final WordsListMapper wordsListMapper;
+  final WordMapper wordMapper;
 
-  WordsRepositoryImpl({required this.database});
+  WordsRepositoryImpl(
+      {required this.database,
+      required this.wordsListMapper,
+      required this.wordMapper});
+
+  @override
+  Stream<List<Word>> observeWordsInList(WordsList list) {
+    return database
+        .watchWordsInList(wordsListMapper.mapTo(list))
+        .map((words) => words.map(wordMapper.mapFrom).toList(growable: false));
+  }
 
   @override
   Future<List<Word>> getWordsInList(WordsList list) async {
     final Iterable<DbTranslatedWord> words =
-        await database.getWordsInList(list.id);
+        await database.getWordsInList(wordsListMapper.mapTo(list));
 
-    return words
-        .map((DbTranslatedWord e) => Word(
-            title: e.wordTitle ?? "-", translation: e.wordTranslation ?? "-"))
-        .toList(growable: false);
+    return words.map(wordMapper.mapFrom).toList(growable: false);
   }
+
+  @override
+  Future<Option<Word>> getWordById(int wordId) async {
+    Option<DbTranslatedWord> wordById = await database.getWordById(wordId);
+    return wordById.map(wordMapper.mapFrom);
+  }
+
 
   @override
   Future<List<WordsList>> getLists() async {
     final List<DbWordList> wordLists = await database.getLists();
-
-    return wordLists
-        .map(
-            (DbWordList e) => WordsList(id: e.id, title: e.title ?? "Untitled"))
-        .toList(growable: false);
+    return wordLists.map(wordsListMapper.mapFrom).toList(growable: false);
   }
 
   @override
-  Future<void> fillDB() async {
-    return database.addWords(const [
-      DbTranslatedWordsCompanion(
-          wordTitle: Value('Hallo'),
-          wordTranslation: Value('Hello'),
-          wordList: Value(1)),
-      DbTranslatedWordsCompanion(
-          wordTitle: Value('Tschüs'),
-          wordTranslation: Value('Bye'),
-          wordList: Value(1)),
-      DbTranslatedWordsCompanion(
-          wordTitle: Value('Entschuldigung'),
-          wordTranslation: Value('Excuse me'),
-          wordList: Value(1)),
+  Future<void> addWord(Word word) {
+    DbTranslatedWordsCompanion wordCompanion = wordMapper
+        .mapTo(word)
+        .toCompanion(true)
+        .copyWith(id: const Value.absent());
+    return database.addWord(wordCompanion);
+  }
 
+  @override
+  Future<void> fillDB(WordsList wordsList) async {
+    return database.addWords([
+      DbTranslatedWordsCompanion(
+          wordTitle: const Value('Hallo'),
+          wordTranslation: const Value('Hello'),
+          wordList: Value(wordsList.id)),
+      DbTranslatedWordsCompanion(
+          wordTitle: const Value('Tschüs'),
+          wordTranslation: const Value('Bye'),
+          wordList: Value(wordsList.id)),
+      DbTranslatedWordsCompanion(
+          wordTitle: const Value('Entschuldigung'),
+          wordTranslation: const Value('Excuse me'),
+          wordList: Value(wordsList.id)),
     ]);
   }
 }

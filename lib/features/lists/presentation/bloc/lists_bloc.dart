@@ -14,7 +14,6 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
   final ListsRepository listsRepository;
   final WordsRepository wordsRepository;
 
-  //TODO: Cancel subscription
   StreamSubscription<List<WordsList>>? _subscription;
 
   ListsBloc(this.listsRepository, this.wordsRepository)
@@ -29,7 +28,7 @@ class ListsBloc extends Bloc<ListsEvent, ListsState> {
     });
 
     on<FillDbEvent>((FillDbEvent event, Emitter<ListsState> emit) {
-      wordsRepository.fillDB();
+      wordsRepository.fillDB(event.wordsList);
     });
   }
 

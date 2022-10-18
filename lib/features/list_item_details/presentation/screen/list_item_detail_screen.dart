@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
-import 'package:learnwordsapp/features/list_item_details/bloc/list_item_bloc.dart';
-import 'package:learnwordsapp/features/list_item_details/model/list_item_event.dart';
+import 'package:learnwordsapp/features/common/widget/general_edit_field.dart';
+import 'package:learnwordsapp/features/list_item_details/presentation/bloc/list_item_bloc.dart';
+import 'package:learnwordsapp/features/list_item_details/presentation/model/list_item_event.dart';
 
 class ListsItemDetailScreen extends StatefulWidget {
   const ListsItemDetailScreen({Key? key}) : super(key: key);
@@ -38,9 +39,10 @@ class ListsItemDetailScreenState extends State<ListsItemDetailScreen> {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: buildName(),
+          GeneralEditField(
+            controller: nameController,
+            labelText: 'Name',
+            hintText: 'Enter a new list name',
           ),
         ],
       ),
@@ -58,22 +60,4 @@ class ListsItemDetailScreenState extends State<ListsItemDetailScreen> {
       ),
     );
   }
-
-  Widget buildName() => TextField(
-        controller: nameController,
-        decoration: InputDecoration(
-          hintText: 'Enter a new list name',
-          labelText: 'Name',
-          suffixIcon: nameController.text.isEmpty
-              ? Container(width: 0)
-              : IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => nameController.clear(),
-                ),
-          border: const OutlineInputBorder(),
-        ),
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
-        autofocus: true,
-      );
 }
