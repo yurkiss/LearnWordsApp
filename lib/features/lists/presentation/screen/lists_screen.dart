@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
 import 'package:learnwordsapp/features/list_item_details/presentation/screen/list_item_detail_screen.dart';
 import 'package:learnwordsapp/features/lists/presentation/bloc/lists_bloc.dart';
 import 'package:learnwordsapp/features/lists/presentation/model/lists_state.dart';
@@ -34,7 +34,7 @@ class ListsScreen extends StatelessWidget {
                         (List<WordsList> a) {
                       return a.isEmpty
                           ? const Text("No records.")
-                          : _buildList(context, a);
+                          : _buildList2(context, a);
                     });
                   },
                 ))
@@ -68,13 +68,10 @@ class ListsScreen extends StatelessWidget {
                     horizontal: ListItemValues.horizontalPadding,
                     vertical: ListItemValues.verticalPadding),
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
                 child: Row(
                   children: [
                     Icon(
-                      Icons.menu_book,
+                      Icons.list_alt,
                       color: AppColors.primaryColor.shade900,
                       size: 24,
                     ),
@@ -94,6 +91,35 @@ class ListsScreen extends StatelessWidget {
                   ],
                 ),
               )),
+        );
+      },
+    );
+  }
+
+  Widget _buildList2(BuildContext context, List<WordsList> lists) {
+    return ListView.builder(
+      key: const Key("WordsListsList"),
+      itemCount: lists.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          key: Key("ListNameItem$index"),
+          title: Text(lists[index].title),
+          textColor: AppColors.primaryColor.shade900,
+          trailing: IconButton(
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => WordSurfingScreen(
+                          title: lists[index].title,
+                        ))),
+            icon: const Icon(Icons.arrow_forward_ios),
+            iconSize: 16.0,
+          ),
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      WordsScreen(wordsList: lists[index]))),
         );
       },
     );

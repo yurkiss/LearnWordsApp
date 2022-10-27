@@ -1,13 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:learnwordsapp/common/domain/model/complete.dart';
+import 'package:learnwordsapp/common/domain/model/failure.dart';
 import 'package:learnwordsapp/data/local/api/app_database.dart';
 import 'package:learnwordsapp/data/local/api/exported_models.dart';
 import 'package:learnwordsapp/data/local/mapper/word_mapper.dart';
 import 'package:learnwordsapp/data/local/mapper/words_list_mapper.dart';
-import 'package:learnwordsapp/domain/model/word.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
-import 'package:learnwordsapp/domain/repository/words_repository.dart';
+import 'package:learnwordsapp/common/domain/model/word.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/repository/words_repository.dart';
 
 @Singleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
@@ -41,7 +43,6 @@ class WordsRepositoryImpl implements WordsRepository {
     return wordById.map(wordMapper.mapFrom);
   }
 
-
   @override
   Future<List<WordsList>> getLists() async {
     final List<DbWordList> wordLists = await database.getLists();
@@ -49,12 +50,28 @@ class WordsRepositoryImpl implements WordsRepository {
   }
 
   @override
-  Future<void> addWord(Word word) {
+  Future<Either<Failure, Complete>> addWord(Word word) {
     DbTranslatedWordsCompanion wordCompanion = wordMapper
         .mapTo(word)
         .toCompanion(true)
         .copyWith(id: const Value.absent());
-    return database.addWord(wordCompanion);
+    return database.addWord(wordCompanion).then((value) => Either.cond(
+          () => value > 0,
+          () => const Complete('Word successfully added.'),
+          () => Failure(message: 'Fail to add new word $word'),
+        ));
+  }
+
+  @override
+  Future<Either<Failure, Complete>> editWord(Word word) {
+    DbTranslatedWordsCompanion wordCompanion = wordMapper
+        .mapTo(word)
+        .toCompanion(true);
+    return database.editWord(wordCompanion).then((value) => Either.cond(
+          () => value > 0,
+          () => const Complete('Word successfully edited.'),
+          () => Failure(message: 'Fail to add new word $word'),
+        ));
   }
 
   @override

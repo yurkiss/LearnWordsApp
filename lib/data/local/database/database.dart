@@ -25,6 +25,7 @@ class AppDb extends _$AppDb implements AppDatabase {
   @override
   int get schemaVersion => 1;
 
+  @override
   Future<void> dispose() async {
     await close();
   }
@@ -45,6 +46,11 @@ class AppDb extends _$AppDb implements AppDatabase {
     await batch((Batch batch) {
       batch.insertAll(dbTranslatedWords, entries);
     });
+  }
+
+  @override
+  Future<int> editWord(DbTranslatedWordsCompanion entity) {
+    return into(dbTranslatedWords).insertOnConflictUpdate(entity);
   }
 
   @override

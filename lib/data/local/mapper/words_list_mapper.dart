@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:learnwordsapp/data/local/api/exported_models.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
 
 @injectable
 class WordsListMapper {

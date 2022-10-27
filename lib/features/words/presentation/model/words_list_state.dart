@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:learnwordsapp/domain/model/word.dart';
+import 'package:learnwordsapp/common/domain/model/word.dart';
 
 part 'words_list_state.freezed.dart';
 

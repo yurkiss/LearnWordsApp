@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:learnwordsapp/domain/model/word.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
-import 'package:learnwordsapp/domain/repository/lists_repository.dart';
-import 'package:learnwordsapp/domain/repository/words_repository.dart';
+import 'package:learnwordsapp/common/domain/model/word.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/repository/lists_repository.dart';
+import 'package:learnwordsapp/common/domain/repository/words_repository.dart';
 import 'package:learnwordsapp/features/words/presentation/model/words_list_event.dart';
 import 'package:learnwordsapp/features/words/presentation/model/words_list_state.dart';
 

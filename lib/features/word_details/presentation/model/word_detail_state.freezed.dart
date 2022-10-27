@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$WordState {
   DisplayMode get mode => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get translation => throw _privateConstructorUsedError;
 
@@ -29,7 +30,7 @@ mixin _$WordState {
 abstract class $WordStateCopyWith<$Res> {
   factory $WordStateCopyWith(WordState value, $Res Function(WordState) then) =
       _$WordStateCopyWithImpl<$Res>;
-  $Res call({DisplayMode mode, String title, String translation});
+  $Res call({DisplayMode mode, int? id, String title, String translation});
 }
 
 /// @nodoc
@@ -43,6 +44,7 @@ class _$WordStateCopyWithImpl<$Res> implements $WordStateCopyWith<$Res> {
   @override
   $Res call({
     Object? mode = freezed,
+    Object? id = freezed,
     Object? title = freezed,
     Object? translation = freezed,
   }) {
@@ -51,6 +53,10 @@ class _$WordStateCopyWithImpl<$Res> implements $WordStateCopyWith<$Res> {
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
               as DisplayMode,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -69,7 +75,7 @@ abstract class _$$_WordStateCopyWith<$Res> implements $WordStateCopyWith<$Res> {
           _$_WordState value, $Res Function(_$_WordState) then) =
       __$$_WordStateCopyWithImpl<$Res>;
   @override
-  $Res call({DisplayMode mode, String title, String translation});
+  $Res call({DisplayMode mode, int? id, String title, String translation});
 }
 
 /// @nodoc
@@ -85,6 +91,7 @@ class __$$_WordStateCopyWithImpl<$Res> extends _$WordStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? mode = freezed,
+    Object? id = freezed,
     Object? title = freezed,
     Object? translation = freezed,
   }) {
@@ -93,6 +100,10 @@ class __$$_WordStateCopyWithImpl<$Res> extends _$WordStateCopyWithImpl<$Res>
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
               as DisplayMode,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -109,10 +120,15 @@ class __$$_WordStateCopyWithImpl<$Res> extends _$WordStateCopyWithImpl<$Res>
 
 class _$_WordState with DiagnosticableTreeMixin implements _WordState {
   const _$_WordState(
-      {required this.mode, required this.title, required this.translation});
+      {required this.mode,
+      this.id,
+      required this.title,
+      required this.translation});
 
   @override
   final DisplayMode mode;
+  @override
+  final int? id;
   @override
   final String title;
   @override
@@ -120,7 +136,7 @@ class _$_WordState with DiagnosticableTreeMixin implements _WordState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WordState(mode: $mode, title: $title, translation: $translation)';
+    return 'WordState(mode: $mode, id: $id, title: $title, translation: $translation)';
   }
 
   @override
@@ -129,6 +145,7 @@ class _$_WordState with DiagnosticableTreeMixin implements _WordState {
     properties
       ..add(DiagnosticsProperty('type', 'WordState'))
       ..add(DiagnosticsProperty('mode', mode))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('translation', translation));
   }
@@ -139,6 +156,7 @@ class _$_WordState with DiagnosticableTreeMixin implements _WordState {
         (other.runtimeType == runtimeType &&
             other is _$_WordState &&
             const DeepCollectionEquality().equals(other.mode, mode) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.translation, translation));
@@ -148,6 +166,7 @@ class _$_WordState with DiagnosticableTreeMixin implements _WordState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(mode),
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(translation));
 
@@ -160,11 +179,14 @@ class _$_WordState with DiagnosticableTreeMixin implements _WordState {
 abstract class _WordState implements WordState {
   const factory _WordState(
       {required final DisplayMode mode,
+      final int? id,
       required final String title,
       required final String translation}) = _$_WordState;
 
   @override
   DisplayMode get mode;
+  @override
+  int? get id;
   @override
   String get title;
   @override

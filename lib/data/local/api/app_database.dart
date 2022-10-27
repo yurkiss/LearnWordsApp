@@ -15,6 +15,7 @@ abstract class AppDatabase {
   Future<Option<DbTranslatedWord>> getWordById(int wordId);
   Stream<List<DbTranslatedWord>> watchWordsInList(DbWordList list);
 
+  Future<int> editWord(DbTranslatedWordsCompanion words);
 
   Future<void> dispose();
 }

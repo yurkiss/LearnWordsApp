@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:learnwordsapp/domain/model/word.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/model/word.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
 
 part 'word_card_state.freezed.dart';
 

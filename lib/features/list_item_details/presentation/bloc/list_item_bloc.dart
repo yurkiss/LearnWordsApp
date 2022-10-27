@@ -1,7 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:learnwordsapp/domain/repository/lists_repository.dart';
+import 'package:learnwordsapp/common/domain/repository/lists_repository.dart';
 import 'package:learnwordsapp/features/list_item_details/presentation/model/list_item_event.dart';
 import 'package:learnwordsapp/features/list_item_details/presentation/model/list_item_state.dart';
 

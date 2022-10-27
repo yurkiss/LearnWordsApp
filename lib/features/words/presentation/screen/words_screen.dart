@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
-import 'package:learnwordsapp/domain/model/word.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/model/word.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
 import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/features/lists/presentation/bloc/lists_bloc.dart';
 import 'package:learnwordsapp/features/lists/presentation/model/lists_event.dart';
@@ -34,8 +34,10 @@ class WordsScreen extends StatelessWidget {
                   builder: (BuildContext context, WordsListState state) {
                     return state.lists.fold(() => const Text("No records."),
                         (List<Word> a) {
-                          return a.isEmpty ? const Text("No records.") : _buildList(context, a);
-                        });
+                      return a.isEmpty
+                          ? const Text("No records.")
+                          : _buildList2(context, a);
+                    });
                   },
                 ))
               ],
@@ -43,6 +45,30 @@ class WordsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildList2(BuildContext context, List<Word> lists) {
+    return ListView.builder(
+      key: const Key("WordsList"),
+      itemCount: lists.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          key: Key("ListNameItem$index"),
+          tileColor: Colors.white,
+          title: Text(lists[index].title),
+          textColor: AppColors.primaryColor.shade900,
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => WordDetailScreen(
+                          wordsList: wordsList,
+                          wordId: lists[index].id,
+                        )));
+          },
+        );
+      },
     );
   }
 
@@ -122,7 +148,6 @@ class WordsScreen extends StatelessWidget {
         ],
       ),
     );
-
   }
 
   Widget _stubDataButton(BuildContext context) {

@@ -7,6 +7,7 @@ part 'word_detail_state.freezed.dart';
 abstract class WordState with _$WordState {
   const factory WordState({
     required DisplayMode mode,
+    int? id,
     required String title,
     required String translation,
   }) = _WordState;

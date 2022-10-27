@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
 import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/features/common/widget/general_edit_field.dart';
 import 'package:learnwordsapp/features/word_details/presentation/bloc/word_detail_bloc.dart';
@@ -10,26 +11,26 @@ import 'package:learnwordsapp/features/word_details/presentation/model/word_deta
 class WordDetailScreen extends StatefulWidget {
   static const String routeKey = '/words/item';
   final WordsList wordsList;
-  final int wordId;
+  final int? wordId;
   final DisplayMode displayMode;
 
   const WordDetailScreen._(
       {Key? key,
       required this.wordsList,
-      required this.wordId,
+      this.wordId,
       required this.displayMode})
       : super(key: key);
 
   factory WordDetailScreen({
     Key? key,
     required WordsList wordsList,
-    int wordId = -1,
+    int? wordId,
   }) =>
       WordDetailScreen._(
         key: key,
         wordsList: wordsList,
         wordId: wordId,
-        displayMode: wordId > 0 ? DisplayMode.edit : DisplayMode.create,
+        displayMode: wordId != null ? DisplayMode.edit : DisplayMode.create,
       );
 
   @override
@@ -37,25 +38,25 @@ class WordDetailScreen extends StatefulWidget {
 }
 
 class WordDetailScreenState extends State<WordDetailScreen> {
-  final wordTitleController = TextEditingController();
-  final wordTranslationController = TextEditingController();
-  late final WordDetailBloc bloc;
+  final _wordTitleController = TextEditingController();
+  final _wordTranslationController = TextEditingController();
+  late final WordDetailBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = getIt.get<WordDetailBloc>();
-    if (widget.displayMode == DisplayMode.edit) {
-      bloc.add(WordEvent.queryWordEvent(id: widget.wordId));
+    _bloc = getIt.get<WordDetailBloc>();
+    if (widget.displayMode == DisplayMode.edit && widget.wordId != null) {
+      _bloc.add(WordEvent.queryWordEvent(id: widget.wordId!));
     }
-    wordTitleController.addListener(() => setState(() {}));
-    wordTranslationController.addListener(() => setState(() {}));
+    _wordTitleController.addListener(() => setState(() {}));
+    _wordTranslationController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    wordTitleController.dispose();
-    wordTranslationController.dispose();
+    _wordTitleController.dispose();
+    _wordTranslationController.dispose();
     super.dispose();
   }
 
@@ -63,22 +64,31 @@ class WordDetailScreenState extends State<WordDetailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          color: AppColors.backgroundColor,
-          child: Column(
-            children: <Widget>[
-              _buildTopNav(context),
-              GeneralEditField(
-                controller: wordTitleController,
-                hintText: 'Enter a new word title',
-                labelText: 'Word',
+        body: BlocProvider<WordDetailBloc>(
+          create: (context) => _bloc,
+          child: BlocListener<WordDetailBloc, WordState>(
+            listener: (context, state) {
+              _wordTitleController.text = state.title;
+              _wordTranslationController.text = state.translation;
+            },
+            child: Container(
+              color: AppColors.backgroundColor,
+              child: Column(
+                children: <Widget>[
+                  _buildTopNav(context),
+                  GeneralEditField(
+                    controller: _wordTitleController,
+                    hintText: 'Enter a new word title',
+                    labelText: 'Word',
+                  ),
+                  GeneralEditField(
+                    controller: _wordTranslationController,
+                    hintText: 'Enter the translation',
+                    labelText: 'Translation',
+                  ),
+                ],
               ),
-              GeneralEditField(
-                controller: wordTranslationController,
-                hintText: 'Enter the translation',
-                labelText: 'Translation',
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -102,8 +112,8 @@ class WordDetailScreenState extends State<WordDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Add new word',
+                  Text( widget.displayMode == DisplayMode.create ?
+                    'Add new word' : 'Edit word',
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold),
@@ -120,9 +130,10 @@ class WordDetailScreenState extends State<WordDetailScreen> {
               iconSize: 24,
               tooltip: 'Save',
               onPressed: () {
-                bloc.add(WordEvent.saveWordEvent(
-                  title: wordTitleController.text,
-                  translation: wordTranslationController.text,
+                _bloc.add(WordEvent.saveWordEvent(
+                  id: widget.wordId,
+                  title: _wordTitleController.text,
+                  translation: _wordTranslationController.text,
                   list: widget.wordsList,
                 ));
 

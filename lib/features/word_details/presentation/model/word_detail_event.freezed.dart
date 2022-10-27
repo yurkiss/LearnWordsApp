@@ -18,21 +18,22 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$WordEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String title, String translation, WordsList list)
+    required TResult Function(
+            int? id, String title, String translation, WordsList list)
         saveWordEvent,
     required TResult Function(int id) queryWordEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String title, String translation, WordsList list)?
+    TResult Function(int? id, String title, String translation, WordsList list)?
         saveWordEvent,
     TResult Function(int id)? queryWordEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String title, String translation, WordsList list)?
+    TResult Function(int? id, String title, String translation, WordsList list)?
         saveWordEvent,
     TResult Function(int id)? queryWordEvent,
     required TResult orElse(),
@@ -79,7 +80,7 @@ abstract class _$$SaveWordEventCopyWith<$Res> {
   factory _$$SaveWordEventCopyWith(
           _$SaveWordEvent value, $Res Function(_$SaveWordEvent) then) =
       __$$SaveWordEventCopyWithImpl<$Res>;
-  $Res call({String title, String translation, WordsList list});
+  $Res call({int? id, String title, String translation, WordsList list});
 
   $WordsListCopyWith<$Res> get list;
 }
@@ -96,11 +97,16 @@ class __$$SaveWordEventCopyWithImpl<$Res> extends _$WordEventCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? title = freezed,
     Object? translation = freezed,
     Object? list = freezed,
   }) {
     return _then(_$SaveWordEvent(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -128,8 +134,13 @@ class __$$SaveWordEventCopyWithImpl<$Res> extends _$WordEventCopyWithImpl<$Res>
 
 class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
   const _$SaveWordEvent(
-      {required this.title, required this.translation, required this.list});
+      {this.id,
+      required this.title,
+      required this.translation,
+      required this.list});
 
+  @override
+  final int? id;
   @override
   final String title;
   @override
@@ -139,7 +150,7 @@ class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WordEvent.saveWordEvent(title: $title, translation: $translation, list: $list)';
+    return 'WordEvent.saveWordEvent(id: $id, title: $title, translation: $translation, list: $list)';
   }
 
   @override
@@ -147,6 +158,7 @@ class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'WordEvent.saveWordEvent'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('translation', translation))
       ..add(DiagnosticsProperty('list', list));
@@ -157,6 +169,7 @@ class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SaveWordEvent &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.translation, translation) &&
@@ -166,6 +179,7 @@ class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(translation),
       const DeepCollectionEquality().hash(list));
@@ -178,33 +192,34 @@ class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String title, String translation, WordsList list)
+    required TResult Function(
+            int? id, String title, String translation, WordsList list)
         saveWordEvent,
     required TResult Function(int id) queryWordEvent,
   }) {
-    return saveWordEvent(title, translation, list);
+    return saveWordEvent(id, title, translation, list);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String title, String translation, WordsList list)?
+    TResult Function(int? id, String title, String translation, WordsList list)?
         saveWordEvent,
     TResult Function(int id)? queryWordEvent,
   }) {
-    return saveWordEvent?.call(title, translation, list);
+    return saveWordEvent?.call(id, title, translation, list);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String title, String translation, WordsList list)?
+    TResult Function(int? id, String title, String translation, WordsList list)?
         saveWordEvent,
     TResult Function(int id)? queryWordEvent,
     required TResult orElse(),
   }) {
     if (saveWordEvent != null) {
-      return saveWordEvent(title, translation, list);
+      return saveWordEvent(id, title, translation, list);
     }
     return orElse();
   }
@@ -243,10 +258,12 @@ class _$SaveWordEvent with DiagnosticableTreeMixin implements SaveWordEvent {
 
 abstract class SaveWordEvent implements WordEvent {
   const factory SaveWordEvent(
-      {required final String title,
+      {final int? id,
+      required final String title,
       required final String translation,
       required final WordsList list}) = _$SaveWordEvent;
 
+  int? get id;
   String get title;
   String get translation;
   WordsList get list;
@@ -327,7 +344,8 @@ class _$QueryWordEvent with DiagnosticableTreeMixin implements QueryWordEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String title, String translation, WordsList list)
+    required TResult Function(
+            int? id, String title, String translation, WordsList list)
         saveWordEvent,
     required TResult Function(int id) queryWordEvent,
   }) {
@@ -337,7 +355,7 @@ class _$QueryWordEvent with DiagnosticableTreeMixin implements QueryWordEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String title, String translation, WordsList list)?
+    TResult Function(int? id, String title, String translation, WordsList list)?
         saveWordEvent,
     TResult Function(int id)? queryWordEvent,
   }) {
@@ -347,7 +365,7 @@ class _$QueryWordEvent with DiagnosticableTreeMixin implements QueryWordEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String title, String translation, WordsList list)?
+    TResult Function(int? id, String title, String translation, WordsList list)?
         saveWordEvent,
     TResult Function(int id)? queryWordEvent,
     required TResult orElse(),

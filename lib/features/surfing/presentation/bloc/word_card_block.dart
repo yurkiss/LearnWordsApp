@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learnwordsapp/common/utils/indefinite_iterator.dart';
-import 'package:learnwordsapp/domain/model/word.dart';
-import 'package:learnwordsapp/domain/model/words_list.dart';
-import 'package:learnwordsapp/domain/repository/words_repository.dart';
+import 'package:learnwordsapp/common/domain/model/word.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
+import 'package:learnwordsapp/common/domain/repository/words_repository.dart';
 import 'package:learnwordsapp/features/surfing/presentation/model/next_word_event.dart';
 import 'package:learnwordsapp/features/surfing/presentation/model/word_card_state.dart';
 
