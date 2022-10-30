@@ -9,4 +9,6 @@ class WordsList with _$WordsList {
     required int id,
     required String title,
   }) = _WordsList;
+
+  factory WordsList.empty() => const WordsList(id: -1, title: '');
 }

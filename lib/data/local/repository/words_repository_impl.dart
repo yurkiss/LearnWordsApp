@@ -13,49 +13,52 @@ import 'package:learnwordsapp/common/domain/repository/words_repository.dart';
 
 @Singleton(as: WordsRepository)
 class WordsRepositoryImpl implements WordsRepository {
-  final AppDatabase database;
-  final WordsListMapper wordsListMapper;
-  final WordMapper wordMapper;
+  final AppDatabase _database;
+  final WordsListMapper _wordsListMapper;
+  final WordMapper _wordMapper;
 
-  WordsRepositoryImpl(
-      {required this.database,
-      required this.wordsListMapper,
-      required this.wordMapper});
+  WordsRepositoryImpl({
+    required AppDatabase database,
+    required WordsListMapper wordsListMapper,
+    required WordMapper wordMapper,
+  })  : _wordsListMapper = wordsListMapper,
+        _wordMapper = wordMapper,
+        _database = database;
 
   @override
   Stream<List<Word>> observeWordsInList(WordsList list) {
-    return database
-        .watchWordsInList(wordsListMapper.mapTo(list))
-        .map((words) => words.map(wordMapper.mapFrom).toList(growable: false));
+    return _database
+        .watchWordsInList(_wordsListMapper.mapTo(list))
+        .map((words) => words.map(_wordMapper.mapFrom).toList(growable: false));
   }
 
   @override
   Future<List<Word>> getWordsInList(WordsList list) async {
     final Iterable<DbTranslatedWord> words =
-        await database.getWordsInList(wordsListMapper.mapTo(list));
+        await _database.getWordsInList(_wordsListMapper.mapTo(list));
 
-    return words.map(wordMapper.mapFrom).toList(growable: false);
+    return words.map(_wordMapper.mapFrom).toList(growable: false);
   }
 
   @override
   Future<Option<Word>> getWordById(int wordId) async {
-    Option<DbTranslatedWord> wordById = await database.getWordById(wordId);
-    return wordById.map(wordMapper.mapFrom);
+    Option<DbTranslatedWord> wordById = await _database.getWordById(wordId);
+    return wordById.map(_wordMapper.mapFrom);
   }
 
   @override
   Future<List<WordsList>> getLists() async {
-    final List<DbWordList> wordLists = await database.getLists();
-    return wordLists.map(wordsListMapper.mapFrom).toList(growable: false);
+    final List<DbWordList> wordLists = await _database.getLists();
+    return wordLists.map(_wordsListMapper.mapFrom).toList(growable: false);
   }
 
   @override
   Future<Either<Failure, Complete>> addWord(Word word) {
-    DbTranslatedWordsCompanion wordCompanion = wordMapper
+    DbTranslatedWordsCompanion wordCompanion = _wordMapper
         .mapTo(word)
         .toCompanion(true)
         .copyWith(id: const Value.absent());
-    return database.addWord(wordCompanion).then((value) => Either.cond(
+    return _database.addWord(wordCompanion).then((value) => Either.cond(
           () => value > 0,
           () => const Complete('Word successfully added.'),
           () => Failure(message: 'Fail to add new word $word'),
@@ -64,10 +67,9 @@ class WordsRepositoryImpl implements WordsRepository {
 
   @override
   Future<Either<Failure, Complete>> editWord(Word word) {
-    DbTranslatedWordsCompanion wordCompanion = wordMapper
-        .mapTo(word)
-        .toCompanion(true);
-    return database.editWord(wordCompanion).then((value) => Either.cond(
+    DbTranslatedWordsCompanion wordCompanion =
+        _wordMapper.mapTo(word).toCompanion(true);
+    return _database.editWord(wordCompanion).then((value) => Either.cond(
           () => value > 0,
           () => const Complete('Word successfully edited.'),
           () => Failure(message: 'Fail to add new word $word'),
@@ -76,7 +78,7 @@ class WordsRepositoryImpl implements WordsRepository {
 
   @override
   Future<void> fillDB(WordsList wordsList) async {
-    return database.addWords([
+    return _database.addWords([
       DbTranslatedWordsCompanion(
           wordTitle: const Value('Hallo'),
           wordTranslation: const Value('Hello'),

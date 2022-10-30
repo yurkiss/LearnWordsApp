@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:learnwordsapp/features/common/display_mode.dart';
 
 part 'word_detail_state.freezed.dart';
 
@@ -14,5 +15,3 @@ abstract class WordState with _$WordState {
 
   factory WordState.initial() => const WordState(title: '', translation: '', mode: DisplayMode.create);
 }
-
-enum DisplayMode { create, edit }

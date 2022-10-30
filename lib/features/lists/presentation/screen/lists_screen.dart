@@ -34,7 +34,7 @@ class ListsScreen extends StatelessWidget {
                         (List<WordsList> a) {
                       return a.isEmpty
                           ? const Text("No records.")
-                          : _buildList2(context, a);
+                          : _buildList(context, a);
                     });
                   },
                 ))
@@ -51,75 +51,30 @@ class ListsScreen extends StatelessWidget {
       key: const Key("WordsListsList"),
       itemCount: lists.length,
       itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WordSurfingScreen(
-                          title: lists[index].title,
-                        )));
-          },
-          child: Padding(
-              key: Key("ListNameItem$index"),
-              padding: const EdgeInsets.all(2.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: ListItemValues.horizontalPadding,
-                    vertical: ListItemValues.verticalPadding),
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.list_alt,
-                      color: AppColors.primaryColor.shade900,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(child: Text(lists[index].title)),
-                    IconButton(
-                      onPressed: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    WordsScreen(wordsList: lists[index])))
-                      },
-                      icon: const Icon(Icons.arrow_forward_ios),
-                      iconSize: 12.0,
-                    )
-                  ],
-                ),
-              )),
-        );
-      },
-    );
-  }
-
-  Widget _buildList2(BuildContext context, List<WordsList> lists) {
-    return ListView.builder(
-      key: const Key("WordsListsList"),
-      itemCount: lists.length,
-      itemBuilder: (context, index) {
         return ListTile(
           key: Key("ListNameItem$index"),
           title: Text(lists[index].title),
           textColor: AppColors.primaryColor.shade900,
           trailing: IconButton(
             onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WordSurfingScreen(
-                          title: lists[index].title,
-                        ))),
+              context,
+              MaterialPageRoute(
+                builder: (context) => WordSurfingScreen(
+                  title: lists[index].title,
+                  list: lists[index],
+                ),
+              ),
+            ),
             icon: const Icon(Icons.arrow_forward_ios),
             iconSize: 16.0,
           ),
           onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      WordsScreen(wordsList: lists[index]))),
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  WordsScreen(wordsList: lists[index]),
+            ),
+          ),
         );
       },
     );
@@ -153,14 +108,23 @@ class ListsScreen extends StatelessWidget {
             ),
           ),
           IconButton(
-              icon: const Icon(
-                Icons.add_sharp,
-                color: AppColors.primaryColor,
-              ),
-              iconSize: 24,
-              tooltip: 'Add new list',
-              onPressed: () =>
-                  Navigator.pushNamed(context, ListsItemDetailScreen.routeKey)),
+            icon: const Icon(
+              Icons.add_sharp,
+              color: AppColors.primaryColor,
+            ),
+            iconSize: 24,
+            tooltip: 'Add new list',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ListsItemDetailScreen(
+                    wordsList: WordsList.empty(),
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

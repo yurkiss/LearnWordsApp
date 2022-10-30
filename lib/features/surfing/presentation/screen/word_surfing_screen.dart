@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learnwordsapp/common/domain/model/words_list.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
 import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/features/surfing/presentation/bloc/word_card_block.dart';
@@ -10,8 +11,13 @@ import 'package:learnwordsapp/features/surfing/presentation/widget/word_card.dar
 class WordSurfingScreen extends StatefulWidget {
   static const String routeKey = '/surfing';
   final String title;
+  final WordsList list;
 
-  const WordSurfingScreen({Key? key, required this.title}) : super(key: key);
+  const WordSurfingScreen({
+    Key? key,
+    required this.title,
+    required this.list,
+  }) : super(key: key);
 
   @override
   State<WordSurfingScreen> createState() => _WordSurfingScreenState();
@@ -43,9 +49,9 @@ class _WordSurfingScreenState extends State<WordSurfingScreen> {
               child: Column(
                 children: [
                   _buildTopNav(context),
-                  Expanded(child: _getWordCardWidget()),
+                  _getWordCardWidget(),
                   const SizedBox(height: 8.0),
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -57,10 +63,12 @@ class _WordSurfingScreenState extends State<WordSurfingScreen> {
                         ),
                         const Expanded(child: SizedBox()),
                         _actionButtonText(
-                            label: 'Next',
-                            color: AppColors.primaryColor,
-                            onPressed: () =>
-                                _wordCardBloc.add(const NextWordEvent())),
+                          label: 'Next',
+                          color: AppColors.primaryColor,
+                          onPressed: () => _wordCardBloc.add(
+                            NextWordEvent(list: widget.list),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -92,13 +100,15 @@ class _WordSurfingScreenState extends State<WordSurfingScreen> {
   Widget _getWordCardWidget() {
     return BlocBuilder<WordCardBloc, WordCardState>(builder: (context, state) {
       return state.word.fold(
-          () => const Expanded(child: GreetingWidget()),
-          (word) => Expanded(
-                  child: WordCardWidget(
-                    key: UniqueKey(),
-                word: word.title,
-                translation: word.translation,
-              )));
+        () => const Expanded(child: GreetingWidget()),
+        (word) => Expanded(
+          child: WordCardWidget(
+            key: UniqueKey(),
+            word: word.title,
+            translation: word.translation,
+          ),
+        ),
+      );
     });
   }
 
@@ -129,7 +139,9 @@ class _WordSurfingScreenState extends State<WordSurfingScreen> {
               ),
             ),
           ),
-          const SizedBox(width: 24.0,),
+          const SizedBox(
+            width: 24.0,
+          ),
         ],
       ),
     );
@@ -155,8 +167,8 @@ class GreetingWidget extends StatelessWidget {
             "Let's try to learn new words!",
             maxLines: 5,
             style: Theme.of(context).textTheme.headline4?.copyWith(
-              color: AppColors.cardTextColor,
-            ),
+                  color: AppColors.cardTextColor,
+                ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24.0),
@@ -164,8 +176,8 @@ class GreetingWidget extends StatelessWidget {
               "Press the Next button.",
               maxLines: 5,
               style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                color: AppColors.cardTextColor,
-              ),
+                    color: AppColors.cardTextColor,
+                  ),
             ),
           ),
         ],

@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ListItemState {
-  String? get name => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ListItemStateCopyWith<ListItemState> get copyWith =>
@@ -28,7 +28,7 @@ abstract class $ListItemStateCopyWith<$Res> {
   factory $ListItemStateCopyWith(
           ListItemState value, $Res Function(ListItemState) then) =
       _$ListItemStateCopyWithImpl<$Res>;
-  $Res call({String? name});
+  $Res call({String name});
 }
 
 /// @nodoc
@@ -48,7 +48,7 @@ class _$ListItemStateCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -60,7 +60,7 @@ abstract class _$$_ListItemStateCopyWith<$Res>
           _$_ListItemState value, $Res Function(_$_ListItemState) then) =
       __$$_ListItemStateCopyWithImpl<$Res>;
   @override
-  $Res call({String? name});
+  $Res call({String name});
 }
 
 /// @nodoc
@@ -82,7 +82,7 @@ class __$$_ListItemStateCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -93,7 +93,7 @@ class _$_ListItemState with DiagnosticableTreeMixin implements _ListItemState {
   const _$_ListItemState({required this.name});
 
   @override
-  final String? name;
+  final String name;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -127,11 +127,10 @@ class _$_ListItemState with DiagnosticableTreeMixin implements _ListItemState {
 }
 
 abstract class _ListItemState implements ListItemState {
-  const factory _ListItemState({required final String? name}) =
-      _$_ListItemState;
+  const factory _ListItemState({required final String name}) = _$_ListItemState;
 
   @override
-  String? get name;
+  String get name;
   @override
   @JsonKey(ignore: true)
   _$$_ListItemStateCopyWith<_$_ListItemState> get copyWith =>

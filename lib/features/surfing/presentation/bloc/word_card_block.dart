@@ -18,7 +18,7 @@ class WordCardBloc extends Bloc<NextWordEvent, WordCardState> {
   WordCardBloc(this.wordsRepository) : super(WordCardState.initial()) {
     on<NextWordEvent>((NextWordEvent event, Emitter<WordCardState> emit) async {
       if (_selectedList == null) {
-        await queryListAndWords();
+        await queryListAndWords(event);
         _wordIterator?.moveNext();
       }
 
@@ -31,12 +31,12 @@ class WordCardBloc extends Bloc<NextWordEvent, WordCardState> {
     });
   }
 
-  Future<void> queryListAndWords() async {
+  Future<void> queryListAndWords(NextWordEvent event) async {
     List<WordsList> lists = await wordsRepository.getLists();
     if (lists.isNotEmpty) {
-      _selectedList = lists.first;
+      _selectedList = event.list;
 
-      List<Word> words = await wordsRepository.getWordsInList(lists.first);
+      List<Word> words = await wordsRepository.getWordsInList(event.list);
       _wordIterator = IndefiniteIterator(words);
     }
   }

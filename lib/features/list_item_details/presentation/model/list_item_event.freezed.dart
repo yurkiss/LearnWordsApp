@@ -16,36 +16,42 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ListItemEvent {
-  String get title => throw _privateConstructorUsedError;
+  WordsList get list => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String title) saveItemEvent,
+    required TResult Function(WordsList list, String title) saveItemEvent,
+    required TResult Function(WordsList list) queryListEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String title)? saveItemEvent,
+    TResult Function(WordsList list, String title)? saveItemEvent,
+    TResult Function(WordsList list)? queryListEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String title)? saveItemEvent,
+    TResult Function(WordsList list, String title)? saveItemEvent,
+    TResult Function(WordsList list)? queryListEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SaveListItemEvent value) saveItemEvent,
+    required TResult Function(QueryListEvent value) queryListEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(SaveListItemEvent value)? saveItemEvent,
+    TResult Function(QueryListEvent value)? queryListEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SaveListItemEvent value)? saveItemEvent,
+    TResult Function(QueryListEvent value)? queryListEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -60,7 +66,9 @@ abstract class $ListItemEventCopyWith<$Res> {
   factory $ListItemEventCopyWith(
           ListItemEvent value, $Res Function(ListItemEvent) then) =
       _$ListItemEventCopyWithImpl<$Res>;
-  $Res call({String title});
+  $Res call({WordsList list});
+
+  $WordsListCopyWith<$Res> get list;
 }
 
 /// @nodoc
@@ -74,14 +82,21 @@ class _$ListItemEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? title = freezed,
+    Object? list = freezed,
   }) {
     return _then(_value.copyWith(
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      list: list == freezed
+          ? _value.list
+          : list // ignore: cast_nullable_to_non_nullable
+              as WordsList,
     ));
+  }
+
+  @override
+  $WordsListCopyWith<$Res> get list {
+    return $WordsListCopyWith<$Res>(_value.list, (value) {
+      return _then(_value.copyWith(list: value));
+    });
   }
 }
 
@@ -92,7 +107,10 @@ abstract class _$$SaveListItemEventCopyWith<$Res>
           _$SaveListItemEvent value, $Res Function(_$SaveListItemEvent) then) =
       __$$SaveListItemEventCopyWithImpl<$Res>;
   @override
-  $Res call({String title});
+  $Res call({WordsList list, String title});
+
+  @override
+  $WordsListCopyWith<$Res> get list;
 }
 
 /// @nodoc
@@ -108,9 +126,14 @@ class __$$SaveListItemEventCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? list = freezed,
     Object? title = freezed,
   }) {
     return _then(_$SaveListItemEvent(
+      list: list == freezed
+          ? _value.list
+          : list // ignore: cast_nullable_to_non_nullable
+              as WordsList,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -124,14 +147,16 @@ class __$$SaveListItemEventCopyWithImpl<$Res>
 class _$SaveListItemEvent
     with DiagnosticableTreeMixin
     implements SaveListItemEvent {
-  const _$SaveListItemEvent({required this.title});
+  const _$SaveListItemEvent({required this.list, required this.title});
 
+  @override
+  final WordsList list;
   @override
   final String title;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ListItemEvent.saveItemEvent(title: $title)';
+    return 'ListItemEvent.saveItemEvent(list: $list, title: $title)';
   }
 
   @override
@@ -139,6 +164,7 @@ class _$SaveListItemEvent
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ListItemEvent.saveItemEvent'))
+      ..add(DiagnosticsProperty('list', list))
       ..add(DiagnosticsProperty('title', title));
   }
 
@@ -147,12 +173,15 @@ class _$SaveListItemEvent
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SaveListItemEvent &&
+            const DeepCollectionEquality().equals(other.list, list) &&
             const DeepCollectionEquality().equals(other.title, title));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(title));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(list),
+      const DeepCollectionEquality().hash(title));
 
   @JsonKey(ignore: true)
   @override
@@ -162,27 +191,30 @@ class _$SaveListItemEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String title) saveItemEvent,
+    required TResult Function(WordsList list, String title) saveItemEvent,
+    required TResult Function(WordsList list) queryListEvent,
   }) {
-    return saveItemEvent(title);
+    return saveItemEvent(list, title);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String title)? saveItemEvent,
+    TResult Function(WordsList list, String title)? saveItemEvent,
+    TResult Function(WordsList list)? queryListEvent,
   }) {
-    return saveItemEvent?.call(title);
+    return saveItemEvent?.call(list, title);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String title)? saveItemEvent,
+    TResult Function(WordsList list, String title)? saveItemEvent,
+    TResult Function(WordsList list)? queryListEvent,
     required TResult orElse(),
   }) {
     if (saveItemEvent != null) {
-      return saveItemEvent(title);
+      return saveItemEvent(list, title);
     }
     return orElse();
   }
@@ -191,6 +223,7 @@ class _$SaveListItemEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SaveListItemEvent value) saveItemEvent,
+    required TResult Function(QueryListEvent value) queryListEvent,
   }) {
     return saveItemEvent(this);
   }
@@ -199,6 +232,7 @@ class _$SaveListItemEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(SaveListItemEvent value)? saveItemEvent,
+    TResult Function(QueryListEvent value)? queryListEvent,
   }) {
     return saveItemEvent?.call(this);
   }
@@ -207,6 +241,7 @@ class _$SaveListItemEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SaveListItemEvent value)? saveItemEvent,
+    TResult Function(QueryListEvent value)? queryListEvent,
     required TResult orElse(),
   }) {
     if (saveItemEvent != null) {
@@ -217,13 +252,165 @@ class _$SaveListItemEvent
 }
 
 abstract class SaveListItemEvent implements ListItemEvent {
-  const factory SaveListItemEvent({required final String title}) =
-      _$SaveListItemEvent;
+  const factory SaveListItemEvent(
+      {required final WordsList list,
+      required final String title}) = _$SaveListItemEvent;
 
   @override
+  WordsList get list;
   String get title;
   @override
   @JsonKey(ignore: true)
   _$$SaveListItemEventCopyWith<_$SaveListItemEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$QueryListEventCopyWith<$Res>
+    implements $ListItemEventCopyWith<$Res> {
+  factory _$$QueryListEventCopyWith(
+          _$QueryListEvent value, $Res Function(_$QueryListEvent) then) =
+      __$$QueryListEventCopyWithImpl<$Res>;
+  @override
+  $Res call({WordsList list});
+
+  @override
+  $WordsListCopyWith<$Res> get list;
+}
+
+/// @nodoc
+class __$$QueryListEventCopyWithImpl<$Res>
+    extends _$ListItemEventCopyWithImpl<$Res>
+    implements _$$QueryListEventCopyWith<$Res> {
+  __$$QueryListEventCopyWithImpl(
+      _$QueryListEvent _value, $Res Function(_$QueryListEvent) _then)
+      : super(_value, (v) => _then(v as _$QueryListEvent));
+
+  @override
+  _$QueryListEvent get _value => super._value as _$QueryListEvent;
+
+  @override
+  $Res call({
+    Object? list = freezed,
+  }) {
+    return _then(_$QueryListEvent(
+      list: list == freezed
+          ? _value.list
+          : list // ignore: cast_nullable_to_non_nullable
+              as WordsList,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$QueryListEvent with DiagnosticableTreeMixin implements QueryListEvent {
+  const _$QueryListEvent({required this.list});
+
+  @override
+  final WordsList list;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ListItemEvent.queryListEvent(list: $list)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ListItemEvent.queryListEvent'))
+      ..add(DiagnosticsProperty('list', list));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$QueryListEvent &&
+            const DeepCollectionEquality().equals(other.list, list));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(list));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$QueryListEventCopyWith<_$QueryListEvent> get copyWith =>
+      __$$QueryListEventCopyWithImpl<_$QueryListEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(WordsList list, String title) saveItemEvent,
+    required TResult Function(WordsList list) queryListEvent,
+  }) {
+    return queryListEvent(list);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(WordsList list, String title)? saveItemEvent,
+    TResult Function(WordsList list)? queryListEvent,
+  }) {
+    return queryListEvent?.call(list);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(WordsList list, String title)? saveItemEvent,
+    TResult Function(WordsList list)? queryListEvent,
+    required TResult orElse(),
+  }) {
+    if (queryListEvent != null) {
+      return queryListEvent(list);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SaveListItemEvent value) saveItemEvent,
+    required TResult Function(QueryListEvent value) queryListEvent,
+  }) {
+    return queryListEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(SaveListItemEvent value)? saveItemEvent,
+    TResult Function(QueryListEvent value)? queryListEvent,
+  }) {
+    return queryListEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SaveListItemEvent value)? saveItemEvent,
+    TResult Function(QueryListEvent value)? queryListEvent,
+    required TResult orElse(),
+  }) {
+    if (queryListEvent != null) {
+      return queryListEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class QueryListEvent implements ListItemEvent {
+  const factory QueryListEvent({required final WordsList list}) =
+      _$QueryListEvent;
+
+  @override
+  WordsList get list;
+  @override
+  @JsonKey(ignore: true)
+  _$$QueryListEventCopyWith<_$QueryListEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }

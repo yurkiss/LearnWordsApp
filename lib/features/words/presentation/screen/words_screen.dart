@@ -36,7 +36,7 @@ class WordsScreen extends StatelessWidget {
                         (List<Word> a) {
                       return a.isEmpty
                           ? const Text("No records.")
-                          : _buildList2(context, a);
+                          : _buildList(context, a);
                     });
                   },
                 ))
@@ -48,7 +48,7 @@ class WordsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildList2(BuildContext context, List<Word> lists) {
+  Widget _buildList(BuildContext context, List<Word> lists) {
     return ListView.builder(
       key: const Key("WordsList"),
       itemCount: lists.length,
@@ -67,39 +67,6 @@ class WordsScreen extends StatelessWidget {
                           wordId: lists[index].id,
                         )));
           },
-        );
-      },
-    );
-  }
-
-  Widget _buildList(BuildContext context, List<Word> lists) {
-    return ListView.builder(
-      key: const Key("WordsList"),
-      itemCount: lists.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => WordDetailScreen(
-                          wordsList: wordsList,
-                          wordId: lists[index].id,
-                        )));
-          },
-          child: Padding(
-              key: Key("ListNameItem$index"),
-              padding: const EdgeInsets.all(2.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: ListItemValues.horizontalPadding,
-                    vertical: ListItemValues.verticalPadding + 8.0),
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Text(lists[index].title),
-              )),
         );
       },
     );

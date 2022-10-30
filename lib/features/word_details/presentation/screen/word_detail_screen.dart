@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learnwordsapp/di/setup_di.dart';
 import 'package:learnwordsapp/common/domain/model/words_list.dart';
+import 'package:learnwordsapp/features/common/display_mode.dart';
 import 'package:learnwordsapp/features/common/values.dart';
 import 'package:learnwordsapp/features/common/widget/general_edit_field.dart';
 import 'package:learnwordsapp/features/word_details/presentation/bloc/word_detail_bloc.dart';
@@ -14,12 +15,12 @@ class WordDetailScreen extends StatefulWidget {
   final int? wordId;
   final DisplayMode displayMode;
 
-  const WordDetailScreen._(
-      {Key? key,
-      required this.wordsList,
-      this.wordId,
-      required this.displayMode})
-      : super(key: key);
+  const WordDetailScreen._({
+    Key? key,
+    required this.wordsList,
+    this.wordId,
+    required this.displayMode,
+  }) : super(key: key);
 
   factory WordDetailScreen({
     Key? key,
@@ -112,8 +113,10 @@ class WordDetailScreenState extends State<WordDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text( widget.displayMode == DisplayMode.create ?
-                    'Add new word' : 'Edit word',
+                  Text(
+                    widget.displayMode == DisplayMode.create
+                        ? 'Add new word'
+                        : 'Edit word',
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold),
